@@ -14,10 +14,10 @@ class ListCollectionViewCell: UICollectionViewCell {
 	@IBOutlet weak var locationImageView: UIImageView!
 	@IBOutlet weak var locationNameLabel: UILabel!
 
-	var locaton: Location? {
+	var location: Location? {
 		didSet {
-			locationNameLabel.text = locaton?.name
-			locationImageView.sd_setImage(with: URL(string: (locaton?.image)!),
+			locationNameLabel.text = location?.name
+			locationImageView.sd_setImage(with: URL(string: (location?.image)!),
 			                              placeholderImage: UIImage(named: "Placeholder"))
 		}
 	}

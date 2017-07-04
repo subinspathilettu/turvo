@@ -53,7 +53,7 @@ extension ListViewController: UICollectionViewDataSource {
 		if locationViewMode == .list {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ListCollectionViewCell",
 			                                          for: indexPath) as? ListCollectionViewCell
-			cell?.locaton = LocationManager.shared.locations[indexPath.row]
+			cell?.location = LocationManager.shared.locations[indexPath.row]
 			return cell!
 		} else {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GridCollectionViewCell",
@@ -71,7 +71,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
 
 		var size = collectionView.bounds.size
 		if locationViewMode == .list {
-			size.height = 60.0
+			size.height = 60.0 //List view mode cell height
 		} else {
 			size.width = (collectionView.bounds.size.width / 2 ) - 10
 			size.height = size.width
@@ -83,6 +83,9 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
 
 extension ListViewController: UICollectionViewDelegate {
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		print(indexPath.row)
+		let location = LocationManager.shared.locations[indexPath.row]
+		let controller = storyboard?.instantiateViewController(withIdentifier: "DetailsViewController") as? DetailsViewController
+		controller?.location = location
+		navigationController?.pushViewController(controller!, animated: true)
 	}
 }
