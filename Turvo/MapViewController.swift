@@ -12,7 +12,7 @@ import MapKit
 class MapViewController: UIViewController {
 
 	@IBOutlet weak var mapView: MKMapView!
-	var locations: [Location]?
+	var selectedLocation: Location?
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -23,6 +23,9 @@ class MapViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		addLocations()
+		let location = selectedLocation != nil ? selectedLocation : LocationManager.shared.locations.first
+		setMapRegion(location!)
+		selectedLocation = nil
 	}
 
 	func locationsUpdated(_ notification: Notification) {
@@ -30,34 +33,27 @@ class MapViewController: UIViewController {
 	}
 
 	func addLocations() {
-		if locations == nil  {
-			locations = LocationManager.shared.locations
-		}
-
 		removeLocationsFromMap()
-		for location in locations! {
+		for location in LocationManager.shared.locations {
 			let annotation = MKPointAnnotation()
 			annotation.title = location.name
 			annotation.coordinate = CLLocationCoordinate2D(latitude: location.latitude!,
 			                                               longitude: location.longitude!)
 			mapView.addAnnotation(annotation)
 		}
-		setMapRegion()
 	}
 
 	func removeLocationsFromMap() {
 		mapView.removeAnnotations(mapView.annotations)
 	}
 
-	func setMapRegion() {
-		if let location = LocationManager.shared.locations.first {
-			let latDelta:CLLocationDegrees = 0.25
-			let lonDelta:CLLocationDegrees = 0.25
-			let span = MKCoordinateSpanMake(latDelta, lonDelta)
-			let location = CLLocationCoordinate2DMake(location.latitude!,
-			                                          location.longitude!)
-			let region = MKCoordinateRegionMake(location, span)
-			mapView.setRegion(region, animated: false)
-		}
+	func setMapRegion(_ location: Location) {
+		let latDelta:CLLocationDegrees = 0.25
+		let lonDelta:CLLocationDegrees = 0.25
+		let span = MKCoordinateSpanMake(latDelta, lonDelta)
+		let location = CLLocationCoordinate2DMake(location.latitude!,
+												  location.longitude!)
+		let region = MKCoordinateRegionMake(location, span)
+		mapView.setRegion(region, animated: false)
 	}
 }
