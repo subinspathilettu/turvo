@@ -58,8 +58,15 @@ class DetailsViewController: UIViewController {
 	}
 
 	//MARK: Actions
-	func mapButtonAction(_ sender: Any) {
+	@IBAction func mapButtonAction(_ sender: Any) {
+		if let mapController = tabBarController?.viewControllers?[1] as? MapViewController {
+			mapController.locations = [location!]
+			tabBarController?.selectedIndex = 1 //Switch to map view controller
+		}
+	}
 
+	@IBAction func backAction(_ sender: Any) {
+		navigationController?.popViewController(animated: true)
 	}
 }
 

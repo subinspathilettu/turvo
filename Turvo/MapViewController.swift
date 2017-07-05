@@ -12,6 +12,7 @@ import MapKit
 class MapViewController: UIViewController {
 
 	@IBOutlet weak var mapView: MKMapView!
+	var locations: [Location]?
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -29,8 +30,12 @@ class MapViewController: UIViewController {
 	}
 
 	func addLocations() {
+		if locations == nil  {
+			locations = LocationManager.shared.locations
+		}
+
 		removeLocationsFromMap()
-		for location in LocationManager.shared.locations {
+		for location in locations! {
 			let annotation = MKPointAnnotation()
 			annotation.title = location.name
 			annotation.coordinate = CLLocationCoordinate2D(latitude: location.latitude!,

@@ -15,9 +15,9 @@ enum LocationViewMode {
 class ListViewController: UIViewController {
 
 	@IBOutlet weak var locationCollectionView: UICollectionView!
-	@IBOutlet weak var rightBarButtonItem: UIBarButtonItem!
+	@IBOutlet weak var viewSwitchButton: UIButton!
 
-	var locationViewMode = LocationViewMode.grid
+	var locationViewMode = LocationViewMode.list
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -31,9 +31,11 @@ class ListViewController: UIViewController {
 	}
 
 	//MARK: Actions
-	@IBAction func toggleView(_ sender: UIBarButtonItem) {
+	@IBAction func toggleView(_ sender: Any) {
 		locationViewMode = (locationViewMode == .grid ? .list : .grid)
 		locationCollectionView.reloadData()
+		let imageName = (locationViewMode == .grid ? "List" : "Grid")
+		viewSwitchButton.setImage(UIImage(named: imageName), for: .normal)
 	}
 
 	func locationsUpdated(_ notification: Notification) {
